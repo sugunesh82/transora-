@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#091722">
+<title>Transora | Smart Campus Transport</title>
+<style>
+:root{
+  color-scheme: dark;
+  --bg: #050816;
+  --surface: #0b1120;
+  --surface-raised: #111b30;
+  --line: #24344d;
+  --text: #f0f7ff;
+  --muted: #a5b4cc;
+  --mint: #00e5ff;
+  --amber: #ff9f43;
+  --red: #ff7777;
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: "Trebuchet MS", Verdana, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 78% 8%,#17363a 0,transparent 34%),linear-gradient(155deg,#091722,#0d2029 62%,#102a32);color:var(--text);font-family:var(--sans);min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+.topbar{height:72px;padding:0 max(24px,calc((100vw - 1160px)/2));display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff18;background:#091722dc;backdrop-filter:blur(12px);position:sticky;top:0;z-index:5}
+.brand{font-size:20px;font-weight:800;letter-spacing:1px;text-decoration:none}.brand span{color:var(--mint)}
+.topbar nav{display:flex;gap:26px}.topbar nav a{font-size:13px;color:var(--muted);text-decoration:none}.topbar nav a:hover{color:var(--mint)}
+main{width:min(1160px,calc(100% - 48px));margin:0 auto;padding:30px 0 72px}
+.intro{display:grid;grid-template-columns:1fr auto;align-items:end;gap:30px;padding:20px 0 34px;border-bottom:1px solid var(--line)}
+.eyebrow{margin:0 0 12px;color:var(--mint);font-size:11px;font-weight:700;letter-spacing:1.8px}
+h1{font-family:var(--serif);font-size:clamp(38px,5vw,58px);font-weight:400;line-height:1.04;letter-spacing:0;margin:0;max-width:700px}
+.intro-copy{max-width:650px;color:var(--muted);line-height:1.65;font-size:14px;margin:14px 0 0}
+.intro-note{min-width:190px;padding:16px 18px;border-left:2px solid var(--amber);background:#ffffff08;color:var(--muted);font-size:12px;line-height:1.6}.intro-note strong{display:block;color:var(--text);font-size:13px;margin-bottom:4px}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:28px 0 14px}
+.section-heading h2{margin:0;font-size:17px;font-weight:600;letter-spacing:0}
+.section-heading p{margin:0;color:var(--muted);font-size:12px}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);background:#0d202a;}
+.metric{padding:15px 18px;border-right:1px solid var(--line)}.metric:last-child{border:0}
+.metric span{display:block;color:var(--muted);font-size:12px}.metric strong{display:block;margin-top:5px;font-family:var(--serif);font-size:29px;font-weight:400;line-height:1;color:var(--mint)}.metric:nth-child(3) strong{color:var(--amber)}.metric:nth-child(4) strong{color:var(--red)}
+.workspace{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(290px,.85fr);gap:36px;margin-top:34px;align-items:start}
+.section-heading.list-heading{margin-top:0}
+.tools{display:grid;grid-template-columns:minmax(0,1fr) 170px;gap:9px;margin-bottom:12px}
+.field{width:100%;height:42px;padding:0 12px;color:var(--text);background:#0a1b25;border:1px solid var(--line);border-radius:3px;outline:none}
+.field:focus{border-color:var(--mint);box-shadow:0 0 0 2px #8ce2c222}
+.bus-list{display:grid;gap:8px}
+.bus-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;padding:15px 16px;background:linear-gradient(105deg,#132a36,#10232d);border:1px solid var(--line);border-left:3px solid #42616b;animation:rise-in .32s both}
+.bus-card[data-status="On-Time"]{border-left-color:var(--mint)}.bus-card[data-status="Delayed"]{border-left-color:var(--amber)}.bus-card[data-status="Not-Running"]{border-left-color:var(--red)}
+.bus-title{display:flex;align-items:center;gap:10px;margin:0 0 8px;font-size:15px}.bus-mark{width:26px;height:26px;display:grid;place-items:center;border:1px solid #ffffff20;border-radius:50%;font-size:13px;color:var(--mint)}
+.bus-detail{display:flex;flex-wrap:wrap;gap:7px 17px;color:var(--muted);font-size:12px}.bus-detail span{white-space:nowrap}
+.bus-controls{display:grid;justify-items:end;gap:8px}.status-select{height:34px;min-width:138px;padding:0 9px;border-radius:3px;font-size:12px;font-weight:700;background:#0b1d26;border:1px solid var(--line);color:var(--mint)}.status-select[data-status="Delayed"]{color:var(--amber)}.status-select[data-status="Not-Running"]{color:var(--red)}
+.actions{display:flex;gap:6px}.icon-button{width:32px;height:30px;display:grid;place-items:center;border:1px solid var(--line);border-radius:3px;background:transparent;color:var(--muted)}.icon-button:hover{color:var(--text);border-color:var(--mint)}.icon-button svg{width:15px;height:15px}
+.empty{padding:28px 16px;text-align:center;color:var(--muted);border:1px dashed var(--line);font-size:13px}
+.local-note{margin:12px 0 0;color:var(--muted);font-size:11px;line-height:1.55}
+.manage{padding:0 0 0 24px;border-left:1px solid var(--line)}.manage .section-heading{margin:0 0 16px}
+form{display:grid;gap:13px}label{display:grid;gap:6px;color:var(--muted);font-size:12px}
+.form-actions{display:flex;gap:8px;margin-top:3px}
+.button{min-height:40px;padding:0 14px;border:1px solid transparent;border-radius:3px;font-size:12px;font-weight:700}
+.button-primary{background:var(--mint);color:#102a2a}.button-primary:hover{background:#a7efd4}
+.button-secondary{background:transparent;border-color:var(--line);color:var(--text)}.button-secondary:hover{border-color:var(--muted)}
+.toast{min-height:18px;margin:12px 0 0;color:var(--mint);font-size:12px}
+footer{padding:18px 24px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;text-align:center}
+@keyframes rise-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:780px){.workspace{grid-template-columns:1fr;gap:30px}.manage{padding:22px 0 0;border-left:0;border-top:1px solid var(--line)}.intro{grid-template-columns:1fr}.intro-note{max-width:320px}.topbar nav{gap:16px}}
+@media(max-width:520px){.topbar{height:62px;padding:0 18px}.brand{font-size:18px}.topbar nav{gap:12px}.topbar nav a{font-size:12px}main{width:calc(100% - 36px);padding-top:20px}.intro{padding-top:14px}.intro-note{max-width:none}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{border-bottom:1px solid var(--line)}.metric:nth-child(2){border-right:0}.metric:nth-child(3),.metric:nth-child(4){border-bottom:0}.tools{grid-template-columns:1fr}.bus-card{grid-template-columns:1fr;gap:12px}.bus-controls{grid-template-columns:1fr auto;justify-items:start;align-items:center}.status-select{min-width:142px}.actions{justify-self:end}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="#top" aria-label="Transora home">TRANS<span>ORA</span></a><nav aria-label="Main navigation"><a href="#dashboard">Overview</a><a href="#buses">Bus status</a><a href="#manage">Manage</a></nav></header>
+<main id="top">
+<section class="intro" aria-labelledby="page-title"><div><p class="eyebrow">CAMPUS TRANSPORT · OPERATIONS</p><h1 id="page-title">t,<br>in clear view.</h1><p class="intro-copy">Keep routes, departure times, and service status together. Update a bus in seconds and see the fleet count respond immediately.</p></div><aside class="intro-note"><strong>Local demo workspace</strong>Updates are saved in this browser and stay on this device.</aside></section>
+<section id="dashboard" aria-labelledby="overview-title"><div class="section-heading"><h2 id="overview-title">Fleet overview</h2><p id="updatedLabel">Current fleet</p></div><div class="metrics"><div class="metric"><span>Total buses</span><strong id="total">0</strong></div><div class="metric"><span>On time</span><strong id="ontime">0</strong></div><div class="metric"><span>Delayed</span><strong id="delayed">0</strong></div><div class="metric"><span>Not running</span><strong id="notRunning">0</strong></div></div></section>
+<div class="workspace"><section id="buses" aria-labelledby="buses-title"><div class="section-heading list-heading"><h2 id="buses-title">Bus status</h2><button class="button button-secondary" id="resetDemo" type="button">Reset demo</button></div><div class="tools"><input class="field" id="busSearch" type="search" placeholder="Search bus or route" aria-label="Search buses"><select class="field" id="statusFilter" aria-label="Filter buses by status"><option value="all">All statuses</option><option value="On-Time">On time</option><option value="Delayed">Delayed</option><option value="Not-Running">Not running</option></select></div><div class="bus-list" id="busList" aria-live="polite"></div><p class="local-note">Sample routes and times are illustrative. Changes are stored only in this browser; they are not shared with other users.</p></section>
+<section class="manage" id="manage" aria-labelledby="manage-title"><div class="section-heading"><h2 id="manage-title">Manage a bus</h2></div><form id="busForm"><label for="busNo">Bus number<input class="field" id="busNo" required maxlength="24" placeholder="Example: BUS-04"></label><label for="route">Route name<input class="field" id="route" required maxlength="70" placeholder="Example: Avadi route"></label><label for="time">Departure time<input class="field" id="time" required maxlength="30" placeholder="Example: 08:15 AM"></label><label for="status">Bus status<select class="field" id="status"><option value="On-Time">On time</option><option value="Delayed">Delayed</option><option value="Not-Running">Not running</option></select></label><div class="form-actions"><button class="button button-primary" id="submitLabel" type="submit">Add bus</button><button class="button button-secondary" id="cancelEdit" type="button" hidden>Cancel</button></div></form><p class="toast" id="toast" role="status" aria-live="polite"></p></section></div>
+</main><footer>Transora · Smart Campus Transport Management System · Student project prototype</footer>
+<script>
+const defaultBuses=[
+ {no:"BUS-01",route:"Avadi – College",time:"08:00 AM",status:"On-Time"},
+ {no:"BUS-02",route:"Thiruvallur – College",time:"08:15 AM",status:"Delayed"},
+ {no:"BUS-03",route:"Poonamallee – College",time:"08:10 AM",status:"On-Time"}
+];
+const statuses=["On-Time","Delayed","Not-Running"];
+let buses=loadBuses();
+let editingIndex=null;
+let toastTimer;
+
+function loadBuses(){
+ try{
+  const stored=JSON.parse(localStorage.getItem("transoraBuses"));
+  if(!Array.isArray(stored))return defaultBuses.map(bus=>({...bus}));
+  return stored.filter(bus=>bus&&typeof bus.no==="string"&&typeof bus.route==="string"&&typeof bus.time==="string").map(bus=>({no:bus.no,route:bus.route,time:bus.time,status:statuses.includes(bus.status)?bus.status:"On-Time"}));
+ }catch(error){return defaultBuses.map(bus=>({...bus}))}
+}
+function persist(){
+ try{localStorage.setItem("transoraBuses",JSON.stringify(buses))}catch(error){showToast("Browser storage is unavailable. Changes will not persist after closing this page.")}
+}
+function showToast(message){
+ const toast=document.getElementById("toast");toast.textContent=message;
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>{toast.textContent=""},3200);
+}
+function render(){
+ const list=document.getElementById("busList");
+ const query=document.getElementById("busSearch").value.trim().toLowerCase();
+ const filter=document.getElementById("statusFilter").value;
+ const visible=buses.map((bus,index)=>({bus,index})).filter(({bus})=>(filter==="all"||bus.status===filter)&&(`${bus.no} ${bus.route}`.toLowerCase().includes(query)));
+ list.replaceChildren();
+ if(!visible.length){const empty=document.createElement("div");empty.className="empty";empty.textContent=buses.length?"No buses match these filters.":"No buses registered yet. Add one using the form.";list.append(empty)}
+ visible.forEach(({bus,index},position)=>{
+  const card=document.createElement("article");card.className="bus-card";card.dataset.status=bus.status;card.style.animationDelay=`${Math.min(position*35,175)}ms`;
+  const info=document.createElement("div");const title=document.createElement("h3");title.className="bus-title";
+  const mark=document.createElement("span");mark.className="bus-mark";mark.setAttribute("aria-hidden","true");mark.textContent="B";
+  const number=document.createElement("span");number.textContent=bus.no;title.append(mark,number);
+  const details=document.createElement("div");details.className="bus-detail";
+  const route=document.createElement("span");route.textContent="Route · "+bus.route;
+  const time=document.createElement("span");time.textContent="Departs · "+bus.time;details.append(route,time);info.append(title,details);
+  const controls=document.createElement("div");controls.className="bus-controls";
+  const status=document.createElement("select");status.className="status-select";status.dataset.status=bus.status;status.dataset.index=index;status.setAttribute("aria-label","Update status for "+bus.no);
+  statuses.forEach(value=>{const option=document.createElement("option");option.value=value;option.textContent=value==="On-Time"?"On time":value==="Not-Running"?"Not running":"Delayed";option.selected=value===bus.status;status.append(option)});
+  const actions=document.createElement("div");actions.className="actions";
+  const edit=document.createElement("button");edit.type="button";edit.className="icon-button";edit.dataset.action="edit";edit.dataset.index=index;edit.setAttribute("aria-label","Edit "+bus.no);edit.title="Edit bus details";edit.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg>';
+  const remove=document.createElement("button");remove.type="button";remove.className="icon-button";remove.dataset.action="remove";remove.dataset.index=index;remove.setAttribute("aria-label","Remove "+bus.no);remove.title="Remove bus";remove.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg>';
+  actions.append(edit,remove);controls.append(status,actions);card.append(info,controls);list.append(card);
+ });
+ document.getElementById("total").textContent=buses.length;
+ document.getElementById("ontime").textContent=buses.filter(bus=>bus.status==="On-Time").length;
+ document.getElementById("delayed").textContent=buses.filter(bus=>bus.status==="Delayed").length;
+ document.getElementById("notRunning").textContent=buses.filter(bus=>bus.status==="Not-Running").length;
+}
+function stopEditing(){
+ editingIndex=null;document.getElementById("busForm").reset();
+ document.getElementById("submitLabel").textContent="Add bus";document.getElementById("cancelEdit").hidden=true;
+}
+function beginEditing(index){
+ const bus=buses[index];if(!bus)return;editingIndex=index;
+ document.getElementById("busNo").value=bus.no;document.getElementById("route").value=bus.route;
+ document.getElementById("time").value=bus.time;document.getElementById("status").value=bus.status;
+ document.getElementById("submitLabel").textContent="Save changes";document.getElementById("cancelEdit").hidden=false;
+ document.getElementById("manage").scrollIntoView({behavior:"smooth",block:"start"});document.getElementById("busNo").focus();
+}
+document.getElementById("busForm").addEventListener("submit",event=>{
+ event.preventDefault();
+ const no=document.getElementById("busNo").value.trim();
+ const item={no,route:document.getElementById("route").value.trim(),time:document.getElementById("time").value.trim(),status:document.getElementById("status").value};
+ const duplicate=buses.findIndex((bus,index)=>bus.no.toLowerCase()===no.toLowerCase()&&index!==editingIndex);
+ if(duplicate!==-1){document.getElementById("busNo").setCustomValidity("That bus number is already registered.");document.getElementById("busNo").reportValidity();return}
+ document.getElementById("busNo").setCustomValidity("");
+ const wasEditing=editingIndex!==null;
+ if(!wasEditing)buses.push(item);else buses[editingIndex]=item;
+ persist();render();stopEditing();showToast(wasEditing?"Bus details updated.":"Bus added.");
+});
+document.getElementById("busNo").addEventListener("input",event=>event.target.setCustomValidity(""));
+document.getElementById("cancelEdit").addEventListener("click",stopEditing);
+document.getElementById("busSearch").addEventListener("input",render);
+document.getElementById("statusFilter").addEventListener("change",render);
+document.getElementById("busList").addEventListener("change",event=>{
+ if(!event.target.matches(".status-select"))return;
+ const index=Number(event.target.dataset.index);if(!buses[index])return;
+ buses[index].status=event.target.value;persist();render();showToast(buses[index].no+" status updated.");
+});
+document.getElementById("busList").addEventListener("click",event=>{
+ const button=event.target.closest("button[data-action]");if(!button)return;
+ const index=Number(button.dataset.index);
+ if(button.dataset.action==="edit")beginEditing(index);
+ if(button.dataset.action==="remove"&&buses[index]){const [removed]=buses.splice(index,1);if(editingIndex===index)stopEditing();persist();render();showToast(removed.no+" removed.")}
+});
+document.getElementById("resetDemo").addEventListener("click",()=>{
+ buses=defaultBuses.map(bus=>({...bus}));stopEditing();persist();render();showToast("Demo buses restored.");
+});
+render();
+</script>
+</body>
+</html>
